@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalNotes", "PersonalNotes\PersonalNotes\PersonalNotes.csproj", "{DFA66376-AC1D-413A-885C-A1DB273AE582}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalNotes.Client", "PersonalNotes\PersonalNotes.Client\PersonalNotes.Client.csproj", "{C2578A6E-4415-4350-A749-5F9581598F7B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFA66376-AC1D-413A-885C-A1DB273AE582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFA66376-AC1D-413A-885C-A1DB273AE582}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFA66376-AC1D-413A-885C-A1DB273AE582}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFA66376-AC1D-413A-885C-A1DB273AE582}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2578A6E-4415-4350-A749-5F9581598F7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2578A6E-4415-4350-A749-5F9581598F7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2578A6E-4415-4350-A749-5F9581598F7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2578A6E-4415-4350-A749-5F9581598F7B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {47393E07-CE10-4D68-B474-57668EB29D6F}
+	EndGlobalSection
+EndGlobal
