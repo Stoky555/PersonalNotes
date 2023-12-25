@@ -1,0 +1,256 @@
+﻿@page "/todolist"
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@rendermode InteractiveServer
+@using PersonalNotesV2.Models.Todo.Enums
+@using PersonalNotesV2.Services
+@using PersonalNotesV2.Models.Todo
+@using PersonalNotesV2.Shared.Models.Todo
+@inject TodoListService todoListService;
+@inject NavigationManager uriHelper;
+
+<PageTitle>TODO LIST</PageTitle>
+<div class="form-control">
+    <EditForm Model=@TodoItem OnSubmit=@HandleSubmit FormName="AddTodoItem">
+        <h4>Add todo task</h4>
+
+        <div class="form-group">
+            <label for="todo-item">Title : </label>
+            <div class="col-sm-2">
+                <InputText id="todo-item-Title" @bind-Value="TodoItem.Title" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="todo-item">Description: </label>
+            <div class="col-sm-2">
+                <InputText id="todo-item-Description" @bind-Value="TodoItem.Description" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Due Date:</label>
+            <div class="col-sm-2">
+                <InputDate @bind-Value="TodoItem.DueDate" class="form-control" />
+                <InputDate Type="InputDateType.Time" @bind-Value="TodoItem.DueDate" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="StatusDropdownId">Priority</label>
+            <div class="col-sm-2">
+                <InputSelect @bind-Value="TodoItem.Priority" class="form-control">
+                    @foreach (TodoItemPriority item in Enum.GetValues(typeof(TodoItemPriority)).Cast<TodoItemPriority>().ToList())
+                    {
+                        <option>@item.ToString()</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </EditForm>
+</div>
+
+
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Rank</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Due date</th>
+            <th scope="col">Status</th>
+            <th scope="col">Priority</th>
+            @* <th scope="col">UpdatedDate</th> *@
+            <th scope="col">CreatedDate</th>
+            @* <th scope="col">id</th> *@
+            <th scope="col">Edit</th>
+            <th scope="col">Change rank</th>
+            <th scope="col">DELETE</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (TodoItem item in TodoItemsList)
+        {
+            @if (item.Priority == TodoItemPriority.High)
+            {
+                rowColor = "bg-danger";
+            }
+            else if (item.Priority == TodoItemPriority.Medium)
+            {
+                rowColor = "bg-warning";
+            }
+            else if (item.Priority == TodoItemPriority.Low)
+            {
+                rowColor = "bg-primary";
+            }
+
+            <tr>
+                <th scope="row">@item.Rank</th>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+                <td>@item.DueDate</td>
+                <td>@item.Status</td>
+                <td class="@rowColor">@item.Priority</td>
+                @* <td>@item.UpdatedDate</td> *@
+                <td>@item.CreatedDate</td>
+                @* <td>@item.Id</td> *@
+                <td>
+                    @if (editingItemId == item.Id)
+                    {
+                        <button @onclick="CloseEditWindow" type="button" class="btn btn-Warning">Close edit</button>
+                    }
+                    else
+                    {
+                        <button @onclick="@( () => UpdateTodoTask(item.Id) )" type="button" class="btn btn-primary">Edit</button>
+                    }
+                </td>
+                <td>
+                    @{
+                        if (TodoItemsList.Count == 1)
+                        {
+                            <p>-</p>
+                        }
+                        // else if (item.Rank == 1)
+                        // {
+                        //     <button @onclick="@( () => DemoteRank(item.Id) )" class="btn btn-primary">v</button>
+                        // }
+                        // else if (TodoItemsList.Count == item.Rank)
+                        // {
+                        //     <button @onclick="@( () => PromoteRank(item.Id) )" class="btn btn-primary">^</button>
+                        // }
+                        // else
+                        // {
+                        //     <button @onclick="@( () => PromoteRank(item.Id) )" class="btn btn-primary">^</button>
+                        //     <button @onclick="@( () => DemoteRank(item.Id) )" class="btn btn-primary">v</button>
+                        // }
+                    }
+                </td>
+                <td>
+                    @* <button @onclick="@( () => DeleteThisRow(item.Id) )" type="button" class="btn btn-danger">DELETE</button> *@
+                </td>
+            </tr>
+            @if (editingItemId == item.Id)
+            {
+                <tr>
+                    <td colspan="10">
+                        <div>
+                            <!-- Edit form fields -->
+                            <label>Description:</label>
+                            <InputText @bind-Value="TodoItem.Description" class="form-control"></InputText>
+
+                            <label>Due Date:</label>
+                            <InputDate @bind-Value="TodoItem.DueDate" class="form-control"></InputDate>
+
+
+                            <label>Status:</label>
+                            <InputSelect @bind-Value="TodoItem.Status" class="form-control">
+                                @foreach (var status in Enum.GetValues(typeof(TodoItemStatus)))
+                                {
+                                    <option value="@status">@status</option>
+                                }
+                            </InputSelect>
+
+                            <label>Priority:</label>
+                            <InputSelect @bind-Value="TodoItem.Priority" class="form-control">
+                                @foreach (var priority in Enum.GetValues(typeof(TodoItemPriority)))
+                                {
+                                    <option value="@priority">@priority</option>
+                                }
+                            </InputSelect>
+
+                            <!-- Save button -->
+                            @* <button @onclick="SaveChanges" class="btn btn-primary">Save</button> *@
+                        </div>
+                    </td>
+                </tr>
+            }
+
+            rowColor = "";
+        }
+    </tbody>
+</table>
+
+@code {
+    public List<TodoItem> TodoItemsList = new List<TodoItem>();
+    public TodoItem TodoItem = new TodoItem();
+    public Guid editingItemId = Guid.Empty;
+    public DateTime normalizedDate = DateTime.Now;
+    public string rowColor = "";
+
+    public void HandleSubmit()
+    {
+        if (String.IsNullOrEmpty(TodoItem.Description) || String.IsNullOrEmpty(TodoItem.Title))
+        {
+            return;
+        }
+
+        // TodoItem.Rank = todoListService.GetTodoItemsCurrentHighestRank() + 1;
+
+        // todoListService.AddTodoItem(TodoItem);
+
+        TodoItem.Rank = 0;
+        TodoItem.Title = "";
+        TodoItem.Description = "";
+
+        uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
+    }
+
+    public void UpdateTodoTask(Guid id)
+    {
+        // Set the editing item ID to the clicked row's ID
+        editingItemId = id;
+
+        // Find the item being edited and populate the form fields
+        TodoItem = TodoItemsList.FirstOrDefault(item => item.Id == editingItemId);
+    }
+
+    public void CloseEditWindow()
+    {
+        editingItemId = Guid.Empty;
+        uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
+    }
+
+    // public void SaveChanges()
+    // {
+    //     // Find the item being edited
+    //     var itemBeingEdited = TodoItemsList.FirstOrDefault(item => item.Id == editingItemId);
+
+    //     // Update the properties of the item being edited with the form values
+    //     // Here, you'd likely update the fields like Title, Description, etc. in the itemBeingEdited object
+
+    //     todoListService.UpdateTodoItem(itemBeingEdited);
+
+    //     // Save changes or update the data source accordingly using todoListService
+
+    //     // Reset editingItemId to indicate no item is being edited
+    //     editingItemId = Guid.Empty;
+    // }
+
+    // public void PromoteRank(Guid id)
+    // {
+    //     todoListService.UpdateRankUpOfTodoItem(id);
+    //     uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
+    // }
+
+    // public void DemoteRank(Guid id)
+    // {
+    //     todoListService.UpdateRankDownOfTodoItem(id);
+    //     uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
+    // }
+
+    // public void DeleteThisRow(Guid id)
+    // {
+    //     todoListService.RemoveTodoItemById(id);
+    //     uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
+    // }
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     this.TodoItemsList = todoListService.GetTodoItems();
+    // }
+}
