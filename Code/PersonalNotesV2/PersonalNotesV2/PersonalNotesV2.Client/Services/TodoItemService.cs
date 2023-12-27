@@ -22,17 +22,21 @@ namespace PersonalNotesV2.Client.Services
             return response;
         }
 
-        public Task<TodoItem> DeleteTodoItemAsync(Guid id)
+        public async Task<TodoItem> DeleteTodoItemAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var deletedItem = await _httpClient.DeleteAsync("api/TodoItem/Delete-TodoItem/" + id);
+            var response = await deletedItem.Content.ReadFromJsonAsync<TodoItem>();
+            return response;
         }
 
-        public Task<TodoItem> GetTodoItemByIdAsync(Guid id)
+        public async Task<TodoItem> GetTodoItemByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var allTodoItems = await _httpClient.GetAsync("api/TodoItem/Single-TodoItemById/" + id);
+            var response = await allTodoItems.Content.ReadFromJsonAsync<TodoItem>();
+            return response;
         }
 
-        public async Task<List<TodoItem>> GetTodoItemsAsync()
+        public async Task<List<TodoItem>> GetTodoItemsFromContextAsyncAsync()
         {
             var allTodoItems = await _httpClient.GetAsync("api/TodoItem/All-TodoItems");
             var response = await allTodoItems.Content.ReadFromJsonAsync<List<TodoItem>>();
@@ -41,38 +45,37 @@ namespace PersonalNotesV2.Client.Services
 
         public async Task<int> GetTodoItemsCurrentHighestRank()
         {
-            var allTodoItems = await _httpClient.GetAsync("api/TodoItem/Get-TodoItemHighestRank");
-            var response = await allTodoItems.Content.ReadFromJsonAsync<int>();
+            var highestRank = await _httpClient.GetAsync("api/TodoItem/Get-TodoItemHighestRank");
+            var response = await highestRank.Content.ReadFromJsonAsync<int>();
             return response;
         }
 
         public async Task<bool> UpdateRankDownOfTodoItem(Guid id)
         {
-            var allTodoItems = await _httpClient.GetAsync("api/TodoItem/Update-TodoItemRankDown");
-            var response = await allTodoItems.Content.ReadFromJsonAsync<bool>();
+            var rankUpdated = await _httpClient.GetAsync("api/TodoItem/Update-TodoItemRankDown/" + id);
+            var response = await rankUpdated.Content.ReadFromJsonAsync<bool>();
             return response;
         }
 
         public async Task<bool> UpdateRanksForTodoList(int rank)
         {
-            var allTodoItems = await _httpClient.GetAsync("api/TodoItem/Update-TodoItemRanks");
-            var response = await allTodoItems.Content.ReadFromJsonAsync<bool>();
+            var updatedRanks = await _httpClient.GetAsync("api/TodoItem/Update-TodoItemRanks/" + rank);
+            var response = await updatedRanks.Content.ReadFromJsonAsync<bool>();
             return response;
         }
 
         public async Task<bool> UpdateRankUpOfTodoItem(Guid id)
         {
-            throw new NotImplementedException();
+            var updatedTodoItem = await _httpClient.GetAsync("api/TodoItem/Update-TodoItemRanks/" + id);
+            var response = await updatedTodoItem.Content.ReadFromJsonAsync<bool>();
+            return response;
         }
 
         public async Task<TodoItem> UpdateTodoItemAsync(TodoItem item)
         {
-            throw new NotImplementedException();
-        }
-
-        int ITodoItemRepository.GetTodoItemsCurrentHighestRank()
-        {
-            throw new NotImplementedException();
+            var updatedTodoItem = await _httpClient.PutAsJsonAsync("api/TodoItem/Update-TodoItem", item);
+            var response = await updatedTodoItem.Content.ReadFromJsonAsync<TodoItem>();
+            return response;
         }
     }
 }

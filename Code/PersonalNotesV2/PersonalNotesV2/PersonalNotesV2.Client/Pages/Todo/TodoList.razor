@@ -1,11 +1,11 @@
-﻿@* @* @page "/todolist"
+﻿@page "/todolist"
 @using static Microsoft.AspNetCore.Components.Web.RenderMode
-@rendermode InteractiveServer
+@rendermode InteractiveAuto
+@using PersonalNotesV2.Client.Services
 @using PersonalNotesV2.Models.Todo.Enums
-@using PersonalNotesV2.Services
 @using PersonalNotesV2.Models.Todo
 @using PersonalNotesV2.Shared.Models.Todo
-@inject NavigationManager uriHelper;
+@inject NavigationManager uriHelper
 
 <PageTitle>TODO LIST</PageTitle>
 <div class="form-control">
@@ -64,9 +64,9 @@
             <th scope="col">Due date</th>
             <th scope="col">Status</th>
             <th scope="col">Priority</th>
-            @* <th scope="col">UpdatedDate</th> 
+            @* <th scope="col">UpdatedDate</th> *@
             <th scope="col">CreatedDate</th>
-            @* <th scope="col">id</th> 
+            @* <th scope="col">id</th> *@
             <th scope="col">Edit</th>
             <th scope="col">Change rank</th>
             <th scope="col">DELETE</th>
@@ -95,9 +95,9 @@
                 <td>@item.DueDate</td>
                 <td>@item.Status</td>
                 <td class="@rowColor">@item.Priority</td>
-                @* <td>@item.UpdatedDate</td> 
+                @* <td>@item.UpdatedDate</td> *@
                 <td>@item.CreatedDate</td>
-                @* <td>@item.Id</td> 
+                @* <td>@item.Id</td> *@
                 <td>
                     @if (editingItemId == item.Id)
                     {
@@ -181,16 +181,16 @@
     public DateTime normalizedDate = DateTime.Now;
     public string rowColor = "";
 
-    public void HandleSubmit()
+    public async void HandleSubmit()
     {
         if (String.IsNullOrEmpty(TodoItem.Description) || String.IsNullOrEmpty(TodoItem.Title))
         {
             return;
         }
 
-        TodoItem.Rank = todoListService.GetTodoItemsCurrentHighestRank() + 1;
+        TodoItem.Rank = await TodoItemService.GetTodoItemsCurrentHighestRank() + 1;
 
-        todoListService.AddTodoItem(TodoItem);
+        await TodoItemService.AddTodoItemAsync(TodoItem);
 
         TodoItem.Rank = 0;
         TodoItem.Title = "";
@@ -214,7 +214,7 @@
         uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
     }
 
-    public void SaveChanges()
+    public async void SaveChanges()
     {
         // Find the item being edited
         var itemBeingEdited = TodoItemsList.FirstOrDefault(item => item.Id == editingItemId);
@@ -222,7 +222,7 @@
         // Update the properties of the item being edited with the form values
         // Here, you'd likely update the fields like Title, Description, etc. in the itemBeingEdited object
 
-        todoListService.UpdateTodoItem(itemBeingEdited);
+        await TodoItemService.UpdateTodoItemAsync(itemBeingEdited);
 
         // Save changes or update the data source accordingly using todoListService
 
@@ -230,26 +230,30 @@
         editingItemId = Guid.Empty;
     }
 
-    public void PromoteRank(Guid id)
+    public async void PromoteRank(Guid id)
     {
-        todoListService.UpdateRankUpOfTodoItem(id);
+        await TodoItemService.UpdateRankUpOfTodoItem(id);
         uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
     }
 
-    public void DemoteRank(Guid id)
+    public async void DemoteRank(Guid id)
     {
-        todoListService.UpdateRankDownOfTodoItem(id);
+        await TodoItemService.UpdateRankDownOfTodoItem(id);
         uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
     }
 
-    public void DeleteThisRow(Guid id)
+    public async void DeleteThisRow(Guid id)
     {
-        todoListService.RemoveTodoItemById(id);
+        await TodoItemService.DeleteTodoItemAsync(id);
         uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
     }
 
     protected override async Task OnInitializedAsync()
     {
-        this.TodoItemsList = todoListService.GetTodoItems();
+        await Task.Delay(1000);
+
+        var todoItemsUnordered = await TodoItemService.GetTodoItemsFromContextAsyncAsync();
+
+        this.TodoItemsList = todoItemsUnordered.OrderBy(r => r.Rank).ToList();
     }
-} *@ 
+}

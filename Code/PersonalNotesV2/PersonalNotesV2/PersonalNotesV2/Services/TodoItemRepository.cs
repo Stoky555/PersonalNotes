@@ -50,21 +50,21 @@ namespace PersonalNotesV2.Services
             return todoItem;
         }
 
-        public async Task<List<TodoItem>> GetTodoItemsAsync()
+        public async Task<List<TodoItem>> GetTodoItemsFromContextAsyncAsync()
         {
             var todoItems = await _context.TodoItems.ToListAsync();
 
             return todoItems;
         }
 
-        public int GetTodoItemsCurrentHighestRank()
+        public async Task<int> GetTodoItemsCurrentHighestRank()
         {
             var todoItemsList = new List<TodoItem>();
             int highestRank = 0;
 
             if (_context.TodoItems.Any())
             {
-                int? highestRankNullable = _context.TodoItems.Max(x => x.Rank);
+                int? highestRankNullable = await _context.TodoItems.MaxAsync(x => x.Rank);
                 highestRank = highestRankNullable ?? 0; // Providing 0 as a default value if highestRankNullable is null
             }
             

@@ -4,6 +4,8 @@ using PersonalNotesV2.Shared.TodoItemRepository;
 
 namespace PersonalNotesV2.Controller
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class TodoItemController : ControllerBase
     {
         private readonly ITodoItemRepository _todoItemRepository;
@@ -32,7 +34,7 @@ namespace PersonalNotesV2.Controller
         [HttpGet("All-TodoItems")]
         public async Task<ActionResult<List<TodoItem>>> GetAllTodoItemsAsync()
         {
-            var todoItem = await _todoItemRepository.GetTodoItemsAsync();
+            var todoItem = await _todoItemRepository.GetTodoItemsFromContextAsyncAsync();
 
             return Ok(todoItem);
         }
@@ -45,7 +47,7 @@ namespace PersonalNotesV2.Controller
             return Ok(todoItem);
         }
 
-        [HttpPut("Update-TodoItem/{id}")]
+        [HttpPut("Update-TodoItem")]
         public async Task<ActionResult<TodoItem>> UpdateTodoItemsAsync(TodoItem todoItem)
         {
             var updateTodoItem = await _todoItemRepository.UpdateTodoItemAsync(todoItem);
@@ -78,9 +80,9 @@ namespace PersonalNotesV2.Controller
         }
 
         [HttpGet("Get-TodoItemHighestRank")]
-        public ActionResult<TodoItem> UpdateRankDownForTodoList()
+        public async Task<ActionResult<TodoItem>> GetTodoItemHighestRank()
         {
-            var currentHiighestRank = _todoItemRepository.GetTodoItemsCurrentHighestRank();
+            var currentHiighestRank = await _todoItemRepository.GetTodoItemsCurrentHighestRank();
 
             return Ok(currentHiighestRank);
         }
