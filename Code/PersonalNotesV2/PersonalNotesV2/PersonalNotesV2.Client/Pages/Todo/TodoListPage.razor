@@ -1,6 +1,8 @@
 ﻿@page "/todolist"
+@using Microsoft.AspNetCore.Authorization
 @using static Microsoft.AspNetCore.Components.Web.RenderMode
 @rendermode InteractiveAuto
+@attribute [Authorize]
 
 <PageTitle>TODO LIST</PageTitle>
 
