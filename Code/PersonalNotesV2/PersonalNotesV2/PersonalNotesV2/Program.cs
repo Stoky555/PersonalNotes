@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PersonalNotesV2;
 using PersonalNotesV2.Client.Pages;
+using PersonalNotesV2.Client.Repository;
 using PersonalNotesV2.Components;
 using PersonalNotesV2.Components.Account;
 using PersonalNotesV2.Data;
@@ -50,6 +51,7 @@ builder.Services.ConfigureApplicationCookie(opt =>
 });
 
 builder.Services.AddScoped<ITodoItemRepository, TodoItemRepository>();
+builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 
 builder.Services.AddScoped(http => new HttpClient
 {

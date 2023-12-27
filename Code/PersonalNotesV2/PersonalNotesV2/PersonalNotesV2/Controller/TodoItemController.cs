@@ -40,7 +40,7 @@ namespace PersonalNotesV2.Controller
         }
 
         [HttpGet("Single-TodoItemById/{id}")]
-        public async Task<ActionResult<TodoItem>> GetAllTodoItemsAsync(Guid id)
+        public async Task<ActionResult<TodoItem>> GetTodoItemByIdAsync(Guid id)
         {
             var todoItem = await _todoItemRepository.GetTodoItemByIdAsync(id);
 
