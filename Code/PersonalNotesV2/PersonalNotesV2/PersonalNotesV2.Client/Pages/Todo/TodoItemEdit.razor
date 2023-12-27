@@ -1,0 +1,53 @@
+﻿@using PersonalNotesV2.Models.Todo.Enums
+@using PersonalNotesV2.Shared.Models.Todo
+<tr>
+    <td colspan="10">
+        <div>
+            <!-- Edit form fields -->
+            <label>Description:</label>
+            <InputText @bind-Value="TodoItem.Description" class="form-control"></InputText>
+
+            <label>Due Date:</label>
+            <InputDate @bind-Value="TodoItem.DueDate" class="form-control"></InputDate>
+
+
+            <label>Status:</label>
+            <InputSelect @bind-Value="TodoItem.Status" class="form-control">
+                @foreach (var status in Enum.GetValues(typeof(TodoItemStatus)))
+                {
+                    <option value="@status">@status</option>
+                }
+            </InputSelect>
+
+            <label>Priority:</label>
+            <InputSelect @bind-Value="TodoItem.Priority" class="form-control">
+                @foreach (var priority in Enum.GetValues(typeof(TodoItemPriority)))
+                {
+                    <option value="@priority">@priority</option>
+                }
+            </InputSelect>
+
+            <!-- Save button -->
+            <button @onclick="SaveChanges" class="btn btn-outline-primary">Save</button>
+        </div>
+    </td>
+</tr>
+
+@code {
+    [Parameter]
+    public TodoItem TodoItem { get; set; }
+
+    public async void SaveChanges()
+    {
+        // Find the item being edited
+        var itemBeingEdited = TodoItem;
+
+        // Update the properties of the item being edited with the form values
+        // Here, you'd likely update the fields like Title, Description, etc. in the itemBeingEdited object
+
+        await TodoItemService.UpdateTodoItemAsync(itemBeingEdited);
+
+        uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
+    }
+}
+ 

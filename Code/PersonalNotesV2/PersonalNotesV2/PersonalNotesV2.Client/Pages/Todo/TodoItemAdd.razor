@@ -1,0 +1,71 @@
+﻿@using PersonalNotesV2.Models.Todo.Enums
+@using PersonalNotesV2.Shared.Models.Todo
+@inject NavigationManager uriHelper
+
+<div class="form-control">
+    <EditForm Model=@TodoItem OnSubmit=@HandleSubmit FormName="AddTodoItem">
+        <h4>Add todo task</h4>
+
+        <div class="form-group">
+            <label for="todo-item">Title : </label>
+            <div class="col-sm-2">
+                <InputText id="todo-item-Title" @bind-Value="TodoItem.Title" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="todo-item">Description: </label>
+            <div class="col-sm-2">
+                <InputText id="todo-item-Description" @bind-Value="TodoItem.Description" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Due Date:</label>
+            <div class="col-sm-2">
+                <InputDate @bind-Value="TodoItem.DueDate" class="form-control" />
+                <InputDate Type="InputDateType.Time" @bind-Value="TodoItem.DueDate" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="StatusDropdownId">Priority</label>
+            <div class="col-sm-2">
+                <InputSelect @bind-Value="TodoItem.Priority" class="form-control">
+                    @foreach (TodoItemPriority item in Enum.GetValues(typeof(TodoItemPriority)).Cast<TodoItemPriority>().ToList())
+                    {
+                        <option>@item.ToString()</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-outline-primary">Submit</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    public TodoItem TodoItem = new TodoItem();
+
+    public async void HandleSubmit()
+    {
+        if (String.IsNullOrEmpty(TodoItem.Description) || String.IsNullOrEmpty(TodoItem.Title))
+        {
+            return;
+        }
+
+        TodoItem.Rank = await TodoItemService.GetTodoItemsCurrentHighestRank() + 1;
+
+        await TodoItemService.AddTodoItemAsync(TodoItem);
+
+        TodoItem.Rank = 0;
+        TodoItem.Title = "";
+        TodoItem.Description = "";
+
+        uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
+    }
+}

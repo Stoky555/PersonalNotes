@@ -66,7 +66,7 @@ namespace PersonalNotesV2.Client.Services
 
         public async Task<bool> UpdateRankUpOfTodoItem(Guid id)
         {
-            var updatedTodoItem = await _httpClient.GetAsync("api/TodoItem/Update-TodoItemRanks/" + id);
+            var updatedTodoItem = await _httpClient.GetAsync("api/TodoItem/Update-TodoItemRankUp/" + id);
             var response = await updatedTodoItem.Content.ReadFromJsonAsync<bool>();
             return response;
         }
