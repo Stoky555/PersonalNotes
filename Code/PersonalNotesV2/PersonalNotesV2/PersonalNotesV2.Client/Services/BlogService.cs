@@ -1,33 +1,54 @@
 ﻿using PersonalNotesV2.Client.Repository;
 using PersonalNotesV2.Shared.Models.Blog;
+using PersonalNotesV2.Shared.Models.Todo;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace PersonalNotesV2.Client.Services
 {
     public class BlogService : IBlogRepository
     {
-        public Task<BlogPost> AddBlogPostAsync(BlogPost item)
+        private readonly HttpClient _httpClient;
+
+        public BlogService(HttpClient httpClient)
         {
-            throw new NotImplementedException();
+            this._httpClient = httpClient;
         }
 
-        public Task<List<BlogPost>> GetAllBlogPostsAsync()
+        public async Task<BlogPost> AddBlogPostAsync(BlogPost blogPost)
         {
-            throw new NotImplementedException();
+            var newBlogPost = await _httpClient.PostAsJsonAsync("api/Blog/Add-BlogPost", blogPost);
+            var response = await newBlogPost.Content.ReadFromJsonAsync<BlogPost>();
+
+            return response;
         }
 
-        public Task<BlogPost> GetBlogPostsByIdAsync()
+        public async Task<List<BlogPost>> GetAllBlogPostsAsync()
         {
-            throw new NotImplementedException();
+            var allBlogPosts = await _httpClient.GetAsync("api/Blog/All-BlogPosts");
+            var response = await allBlogPosts.Content.ReadFromJsonAsync<List<BlogPost>>();
+            return response;
         }
 
-        public Task<bool> RemoveBlogPostAsync(Guid id)
+        public async Task<BlogPost> GetBlogPostByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var blogPostById = await _httpClient.GetAsync("api/Blog/Single-BlogPost/" + id);
+            var response = await blogPostById.Content.ReadFromJsonAsync<BlogPost>();
+            return response;
         }
 
-        public Task<BlogPost> UpdateBlogPostAsync(Guid id)
+        public async Task<bool> DeleteBlogPostAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var deletedBlogPost = await _httpClient.DeleteAsync("api/Blog/Delete-BlogPost/" + id);
+            var response = await deletedBlogPost.Content.ReadFromJsonAsync<bool>();
+            return response;
+        }
+
+        public async Task<BlogPost> UpdateBlogPostAsync(BlogPost blogPost)
+        {
+            var updatedBlogPost = await _httpClient.PutAsJsonAsync("api/TodoItem/Update-BlogPost", blogPost);
+            var response = await updatedBlogPost.Content.ReadFromJsonAsync<BlogPost>();
+            return response;
         }
     }
 }

@@ -1,4 +1,10 @@
-﻿<h3>Blog</h3>
+﻿@page "/blog"
+@using Microsoft.AspNetCore.Authorization
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@rendermode InteractiveAuto
+@attribute [Authorize]
+
+<h3>Blog</h3>
 
 @code {
 
