@@ -1,3 +1,5 @@
+using PersonalNotesV2.Client.Pages.Todo;
+
 namespace PersonalNotesV2.Client
 {
     // Add properties to this class and update the server and client AuthenticationStateProviders
@@ -6,5 +8,6 @@ namespace PersonalNotesV2.Client
     {
         public required string UserId { get; set; }
         public required string Email { get; set; }
+        public List<TodoList> TodoList { get; set; } = new List<TodoList>();
     }
 }

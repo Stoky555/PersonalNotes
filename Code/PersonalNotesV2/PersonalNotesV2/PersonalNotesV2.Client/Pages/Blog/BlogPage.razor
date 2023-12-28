@@ -1,11 +1,15 @@
 ﻿@page "/blog"
 @using Microsoft.AspNetCore.Authorization
+@using PersonalNotesV2.Client.Services
+@using PersonalNotesV2.Shared.Models.Blog
 @using static Microsoft.AspNetCore.Components.Web.RenderMode
 @rendermode InteractiveAuto
 @attribute [Authorize]
 
 <h3>Blog</h3>
 
-@code {
+<BlogPostList></BlogPostList>
 
+@code {
+    
 }

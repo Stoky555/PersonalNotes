@@ -1,9 +1,26 @@
-﻿@foreach ()
-{
-    
-}
+﻿@using PersonalNotesV2.Shared.Models.Blog
+
+<div class="container">
+    <div class="d-flex flex-column">
+        @foreach (BlogArticle post in BlogPosts)
+        {
+            <BlogPost BlogArticle="@post"></BlogPost>
+        }
+    </div>
+</div>
 
 @code {
-    public List<BlogPost> blogPosts { get; set; }
+    [Parameter]
+    public List<BlogArticle> BlogPosts { get; set; } = new List<BlogArticle>();
 
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(500);
+
+        if (this.BlogPosts.Count == 0)
+        {
+            var todoItemsUnordered = await BlogService.GetAllBlogPostsAsync();
+            this.BlogPosts = todoItemsUnordered.OrderBy(r => r.CreatedDate).ToList();
+        }
+    }
 }

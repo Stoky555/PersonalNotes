@@ -1,9 +1,4 @@
 ﻿using PersonalNotesV2.Shared.Models.Todo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PersonalNotesV2.Shared.TodoItemRepository
 {

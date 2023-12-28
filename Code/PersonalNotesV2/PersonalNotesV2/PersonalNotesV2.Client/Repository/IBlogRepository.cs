@@ -4,11 +4,11 @@ namespace PersonalNotesV2.Client.Repository
 {
     public interface IBlogRepository
     {
-        Task<List<BlogPost>> GetAllBlogPostsAsync();
-        Task<BlogPost> GetBlogPostByIdAsync(Guid id);
-        Task<BlogPost> AddBlogPostAsync(BlogPost blogPost);
+        Task<List<BlogArticle>> GetAllBlogPostsAsync();
+        Task<BlogArticle> GetBlogPostByIdAsync(Guid id);
+        Task<BlogArticle> AddBlogPostAsync(BlogArticle blogPost);
         Task<bool> DeleteBlogPostAsync(Guid id);
-        Task<BlogPost> UpdateBlogPostAsync(BlogPost blogPost);
+        Task<BlogArticle> UpdateBlogPostAsync(BlogArticle blogPost);
 
     }
 }

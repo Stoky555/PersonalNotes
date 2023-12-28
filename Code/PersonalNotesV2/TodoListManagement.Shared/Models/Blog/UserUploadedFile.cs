@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace PersonalNotesV2.Shared.Models.Blog
 {
-    public class Image
+    public class UserUploadedFile
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
-        [Required]
-        public string Name { get; set; }
+        public string Base64data { get; set; }
+        public string ContentType { get; set; }
+        public string FileName { get; set; }
     }
 }

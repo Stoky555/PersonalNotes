@@ -15,27 +15,31 @@ namespace PersonalNotesV2.Controller
             this._blogRepository = blogRepository;
         }
 
-        public async Task<ActionResult<List<BlogPost>>> GetAllBlogPostsAsync()
+        [HttpGet("All-BlogPosts")]
+        public async Task<ActionResult<List<BlogArticle>>> GetAllBlogPostsAsync()
         {
             var todoItem = await _blogRepository.GetAllBlogPostsAsync();
 
             return Ok(todoItem);
         }
 
-        public async Task<ActionResult<BlogPost>> GetBlogPostByIdAsync(Guid id)
+        [HttpGet("Single-BlogPost/{id}")]
+        public async Task<ActionResult<BlogArticle>> GetBlogPostByIdAsync(Guid id)
         {
             var blogPost = await _blogRepository.GetBlogPostByIdAsync(id);
 
             return Ok(blogPost);
         }
 
-        public async Task<ActionResult<BlogPost>> AddBlogPostAsync(BlogPost blogPost)
+        [HttpPost("Add-BlogPost")]
+        public async Task<ActionResult<BlogArticle>> AddBlogPostAsync(BlogArticle blogPost)
         {
             var newBlogPost = await _blogRepository.AddBlogPostAsync(blogPost);
 
             return Ok(newBlogPost);
         }
 
+        [HttpDelete("Delete-BlogPost/{id}")]
         public async Task<ActionResult<bool>> DeleteBlogPostAsync(Guid id)
         {
             var deleteBlogPost = await _blogRepository.DeleteBlogPostAsync(id);
@@ -43,7 +47,8 @@ namespace PersonalNotesV2.Controller
             return Ok(deleteBlogPost);
         }
 
-        public async Task<ActionResult<BlogPost>> UpdateBlogPostAsync(BlogPost blogPost)
+        [HttpPut("Update-BlogPost")]
+        public async Task<ActionResult<BlogArticle>> UpdateBlogPostAsync(BlogArticle blogPost)
         {
             var updateBlogPost = await _blogRepository.UpdateBlogPostAsync(blogPost);
 

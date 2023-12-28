@@ -14,7 +14,7 @@ namespace PersonalNotesV2.Services
             this._context = context;
         }
 
-        public async Task<BlogPost> AddBlogPostAsync(BlogPost blogPost)
+        public async Task<BlogArticle> AddBlogPostAsync(BlogArticle blogPost)
         {
             if (blogPost == null) throw new ArgumentNullException("public async Task<BlogPost> AddBlogPostAsync(BlogPost blogPost)");
 
@@ -37,14 +37,14 @@ namespace PersonalNotesV2.Services
             return true;
         }
 
-        public async Task<List<BlogPost>> GetAllBlogPostsAsync()
+        public async Task<List<BlogArticle>> GetAllBlogPostsAsync()
         {
             var blogPosts = await _context.BlogPosts.ToListAsync();
 
             return blogPosts;
         }
 
-        public async Task<BlogPost> GetBlogPostByIdAsync(Guid id)
+        public async Task<BlogArticle> GetBlogPostByIdAsync(Guid id)
         {
             if (id == Guid.Empty) throw new ArgumentNullException("public async Task<BlogPost> GetBlogPostsByIdAsync(Guid id)");
 
@@ -54,7 +54,7 @@ namespace PersonalNotesV2.Services
             return blogPost;
         }
 
-        public async Task<BlogPost> UpdateBlogPostAsync(BlogPost blogPost)
+        public async Task<BlogArticle> UpdateBlogPostAsync(BlogArticle blogPost)
         {
             if (blogPost == null) throw new ArgumentNullException("public async Task<BlogPost> UpdateBlogPostAsync(BlogPost blogPost)");
 

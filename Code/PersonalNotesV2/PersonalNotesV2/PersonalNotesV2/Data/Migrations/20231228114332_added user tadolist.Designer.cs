@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonalNotesV2.Data;
 
@@ -11,9 +12,11 @@ using PersonalNotesV2.Data;
 namespace PersonalNotesV2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231228114332_added user tadolist")]
+    partial class addedusertadolist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,8 +229,9 @@ namespace PersonalNotesV2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -246,31 +250,32 @@ namespace PersonalNotesV2.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
-
                     b.ToTable("BlogPosts");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("30b223b5-38e2-438c-a14f-d2bc16de3122"),
-                            CreatedDate = new DateTime(2023, 12, 28, 21, 53, 56, 435, DateTimeKind.Local).AddTicks(3525),
+                            Id = new Guid("ed436ed6-d1a6-41e9-86a3-f2f6a7d71d0c"),
+                            Author = "Stoky",
+                            CreatedDate = new DateTime(2023, 12, 28, 12, 43, 32, 144, DateTimeKind.Local).AddTicks(4672),
                             Description = "TestData1Blog",
                             Text = "testest1",
                             Title = "TestData1Blog"
                         },
                         new
                         {
-                            Id = new Guid("34da0f3b-1fd9-4fa0-b876-48a9c207f7e5"),
-                            CreatedDate = new DateTime(2023, 12, 28, 21, 53, 56, 435, DateTimeKind.Local).AddTicks(3530),
+                            Id = new Guid("552bbf2f-1c61-41a4-9021-988bcbba2859"),
+                            Author = "Stoky",
+                            CreatedDate = new DateTime(2023, 12, 28, 12, 43, 32, 144, DateTimeKind.Local).AddTicks(4679),
                             Description = "TestData2Blog",
                             Text = "testest2",
                             Title = "TestData2Blog"
                         },
                         new
                         {
-                            Id = new Guid("5270f9e1-260e-4160-8c93-c46ab6761511"),
-                            CreatedDate = new DateTime(2023, 12, 28, 21, 53, 56, 435, DateTimeKind.Local).AddTicks(3536),
+                            Id = new Guid("e963dbf9-5170-4c7d-a5f3-d42bb5b4fa0a"),
+                            Author = "Stoky",
+                            CreatedDate = new DateTime(2023, 12, 28, 12, 43, 32, 144, DateTimeKind.Local).AddTicks(4686),
                             Description = "TestData3Blog",
                             Text = "testest3",
                             Title = "TestData3Blog"
@@ -303,9 +308,6 @@ namespace PersonalNotesV2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -334,17 +336,15 @@ namespace PersonalNotesV2.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
-
                     b.ToTable("TodoItems");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0eb8d5ae-31ad-46d7-b210-42485ed34254"),
-                            CreatedDate = new DateTime(2023, 12, 28, 21, 53, 56, 435, DateTimeKind.Local).AddTicks(3390),
+                            Id = new Guid("cc05086d-c38c-42b9-9371-69e017c95e03"),
+                            CreatedDate = new DateTime(2023, 12, 28, 12, 43, 32, 144, DateTimeKind.Local).AddTicks(4537),
                             Description = "TestData1",
-                            DueDate = new DateTime(2023, 12, 29, 21, 53, 56, 435, DateTimeKind.Local).AddTicks(3391),
+                            DueDate = new DateTime(2023, 12, 29, 12, 43, 32, 144, DateTimeKind.Local).AddTicks(4539),
                             Priority = 1,
                             Rank = 1,
                             Status = 0,
@@ -352,10 +352,10 @@ namespace PersonalNotesV2.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9d7930ed-00f2-4ecb-afad-26653b4e6af4"),
-                            CreatedDate = new DateTime(2023, 12, 28, 21, 53, 56, 435, DateTimeKind.Local).AddTicks(3406),
+                            Id = new Guid("1f93688a-2059-4e33-9e41-475e889580e8"),
+                            CreatedDate = new DateTime(2023, 12, 28, 12, 43, 32, 144, DateTimeKind.Local).AddTicks(4553),
                             Description = "TestData2",
-                            DueDate = new DateTime(2023, 12, 30, 21, 53, 56, 435, DateTimeKind.Local).AddTicks(3408),
+                            DueDate = new DateTime(2023, 12, 30, 12, 43, 32, 144, DateTimeKind.Local).AddTicks(4554),
                             Priority = 2,
                             Rank = 2,
                             Status = 0,
@@ -363,10 +363,10 @@ namespace PersonalNotesV2.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b220e757-b497-4244-ab12-e33ff62260c1"),
-                            CreatedDate = new DateTime(2023, 12, 28, 21, 53, 56, 435, DateTimeKind.Local).AddTicks(3412),
+                            Id = new Guid("cb7d68ee-04bf-4f02-abd6-9a45bdf2fe88"),
+                            CreatedDate = new DateTime(2023, 12, 28, 12, 43, 32, 144, DateTimeKind.Local).AddTicks(4559),
                             Description = "TestData3",
-                            DueDate = new DateTime(2023, 12, 31, 21, 53, 56, 435, DateTimeKind.Local).AddTicks(3413),
+                            DueDate = new DateTime(2023, 12, 31, 12, 43, 32, 144, DateTimeKind.Local).AddTicks(4560),
                             Priority = 3,
                             Rank = 3,
                             Status = 0,
@@ -425,32 +425,11 @@ namespace PersonalNotesV2.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PersonalNotesV2.Shared.Models.Blog.BlogPost", b =>
-                {
-                    b.HasOne("PersonalNotesV2.Data.ApplicationUser", null)
-                        .WithMany("BlogPost")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("PersonalNotesV2.Shared.Models.Blog.Image", b =>
                 {
                     b.HasOne("PersonalNotesV2.Shared.Models.Blog.BlogPost", null)
                         .WithMany("Images")
                         .HasForeignKey("BlogPostId");
-                });
-
-            modelBuilder.Entity("PersonalNotesV2.Shared.Models.Todo.TodoItem", b =>
-                {
-                    b.HasOne("PersonalNotesV2.Data.ApplicationUser", null)
-                        .WithMany("TodoItems")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
-            modelBuilder.Entity("PersonalNotesV2.Data.ApplicationUser", b =>
-                {
-                    b.Navigation("BlogPost");
-
-                    b.Navigation("TodoItems");
                 });
 
             modelBuilder.Entity("PersonalNotesV2.Shared.Models.Blog.BlogPost", b =>

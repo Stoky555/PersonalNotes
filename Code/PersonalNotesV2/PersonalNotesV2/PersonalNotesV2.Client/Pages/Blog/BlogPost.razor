@@ -1,5 +1,23 @@
-﻿
+﻿@using PersonalNotesV2.Shared.Models.Blog
+
+<div class="d-flex flex-column">
+    <h2>@BlogArticle.Title</h2>
+    <p>@BlogArticle.Text</p>
+    <p>@BlogArticle.Description</p>
+    <p>@BlogArticle.CreatedDate</p>
+    @foreach (UserUploadedFile currentImage in @BlogArticle.Images)
+    {
+        <div class="d-flex flex-row">
+            <div class="d-flex flex-column">
+                <p>@currentImage.FileName</p>
+                <h3>@currentImage.ContentType</h3>
+                <p>@currentImage.Id</p>
+            </div>
+        </div>
+    }
+</div>
 
 @code {
-
+    [Parameter]
+    public BlogArticle BlogArticle { get; set; } = new BlogArticle();
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PersonalNotesV2.Shared.Models.Blog
 {
-    public class BlogPost
+    public class BlogArticle
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -15,10 +15,8 @@ namespace PersonalNotesV2.Shared.Models.Blog
         public string Title { get; set; }
         [Required]
         public string Text { get; set; }
-        [Required]
-        public string Author { get; set; }
         public string Description { get; set; } = string.Empty;
-        public List<Image> Images { get; set; }
+        public List<UserUploadedFile> Images { get; set; } = new List<UserUploadedFile>();
         public DateTime CreatedDate { get; set; } = DateTime.Now;
     }
 }
